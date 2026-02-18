@@ -1,0 +1,466 @@
+:root {
+  --bg: rgba(10, 10, 12, 0.78);
+  --panel: rgba(255, 255, 255, 0.05);
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #fff;
+  --muted: rgba(255, 255, 255, 0.55);
+  --primary: #3aa0ff;
+
+  --good: #35d07f;
+  --warn: #f1c40f;
+  --bad: #e74c3c;
+
+  /* Compact layout tuning */
+  --radius: 14px;
+  --itemRadius: 12px;
+  --shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+  --glow: 0 0 0 2px rgba(58, 160, 255, 0.65);
+}
+body::before {
+  content: none !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: transparent;
+  font-family:
+    system-ui,
+    Segoe UI,
+    Roboto,
+    Arial;
+}
+
+.hidden {
+  display: none !important;
+  background: transparent !important;
+}
+
+/* UI wrapper */
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent !important;
+  overflow: hidden;
+}
+
+/* UI wrapper: fullscreen pero TRANSPARENTE */
+#ui {
+  position: fixed;
+  top: 80px;
+  left: 40px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  background: transparent !important;
+
+  /* ✅ IMPORTANTE */
+  z-index: 9999;
+}
+body,
+#ui,
+.left,
+.btn {
+  cursor: default;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+/* Panel: lo colocamos aquí */
+.garage {
+  position: absolute;
+  top: 80px;
+  left: 40px;
+
+  display: flex;
+  gap: 18px;
+  background: transparent !important;
+  pointer-events: auto; /* ✅ IMPORTANTE para click/scroll */
+}
+
+/* class used in HTML: garageOne */
+.garageOne .left {
+  width: 420px; /* more space since right panel is gone */
+}
+
+/* Panel */
+.left {
+  pointer-events: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  /* ❌ QUITAR: backdrop-filter: blur(10px); */
+}
+
+.leftHeader {
+  padding: 14px 14px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.07),
+    rgba(255, 255, 255, 0)
+  );
+}
+
+.title {
+  color: var(--text);
+  font-weight: 1000;
+  letter-spacing: 0.4px;
+  font-size: 18px;
+}
+
+.subtitle {
+  margin-top: 4px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* List */
+.list {
+  max-height: 420px;
+  overflow: auto;
+  padding: 10px;
+}
+
+.list::-webkit-scrollbar {
+  width: 6px;
+}
+.list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+.list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Vehicle item */
+.item {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border-radius: var(--itemRadius);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  margin-bottom: 10px;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease,
+    border-color 0.12s ease;
+}
+
+.item:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.item.selected {
+  background: rgba(58, 160, 255, 0.12);
+  box-shadow: var(--glow);
+  border-color: rgba(58, 160, 255, 0.35);
+}
+
+.item .icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  color: var(--text);
+  font-weight: 1000;
+  flex: 0 0 auto;
+}
+
+/* main column */
+.item .main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* top row inside item */
+.item .top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.item .name {
+  color: var(--text);
+  font-weight: 1000;
+  font-size: 14px;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item .meta {
+  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-weight: 800;
+  font-size: 12px;
+}
+
+.item .badge {
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-weight: 1000;
+  font-size: 11px;
+  letter-spacing: 0.25px;
+  flex: 0 0 auto;
+}
+
+/* Compact details (only selected shows) */
+.item .details {
+  display: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.item.selected .details {
+  display: grid;
+  gap: 8px;
+}
+
+/* mini stat row inside item */
+.miniStat {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 12px;
+  margin-left: -50px;
+  width: 120%;
+  padding: 4px 6px;
+}
+.miniStat .badge {
+  padding: 3px 7px; /* 🔽 */
+  font-size: 10px; /* 🔽 */
+  margin-top: 16px;
+  opacity: 0.9;
+}
+
+.miniLabel {
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: 900;
+  font-size: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* actions inside selected item */
+.itemActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 2px;
+  margin-left: -15%;
+}
+
+.btn {
+  flex: 1;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  font-weight: 1000;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: rgba(58, 160, 255, 0.2);
+  border-color: rgba(58, 160, 255, 0.45);
+}
+
+.btn:hover {
+  filter: brightness(1.06);
+}
+
+/* Footer */
+.leftFooter {
+  padding: 10px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 800;
+  font-size: 11px;
+}
+
+/* Remove old unused selectors (safe no-ops if still referenced) */
+.right,
+.card,
+.vehTop,
+.vehName,
+.vehMeta,
+.dot,
+.stats,
+.stat,
+.row,
+.label,
+.val,
+.bar,
+.fill,
+.pill,
+.actions {
+  display: none !important;
+}
+
+/* ===== Compact stats row (horizontal) ===== */
+.item.selected .details {
+  display: grid;
+  gap: 10px;
+}
+
+/* fila horizontal para las 3 stats */
+.statsRow {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
+  margin-inline-start: 5%;
+}
+
+/* cabecera del miniStat */
+.miniRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.vehIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.02)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  place-items: center;
+  color: var(--primary);
+}
+
+.iconSvg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* label con icono svg */
+.miniLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 450;
+  font-size: 15px;
+  line-height: 1;
+}
+
+.miniLabel svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.95;
+}
+
+/* porcentaje */
+.miniVal {
+  color: var(--text);
+  font-weight: 1000;
+  font-size: 11px;
+  line-height: 0;
+}
+
+/* barra fina */
+.miniBar {
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-top: 7px;
+}
+
+.miniFill {
+  height: 100%;
+  width: 0%;
+  background: var(--good);
+
+  /* animación más suave */
+  transition:
+    width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 240ms ease;
+}
+
+/* tag pequeñito (EXCELENTE/BUENO/...) */
+.miniTag {
+  margin-top: 7px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 1000;
+  font-size: 9px;
+  letter-spacing: 0.2px;
+}
+
+/* responsive por si hay pantallas pequeñas */
+@media (max-width: 900px) {
+  .statsRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Asegura que todo el panel es clicable */
+#ui,
+.garage,
+.left,
+.list,
+.item,
+.details,
+.itemActions {
+  pointer-events: auto !important;
+}
+
+/* Asegura que el botón está encima */
+.itemActions,
+.btn {
+  position: relative;
+  z-index: 9999;
+}
+
+.btn {
+  pointer-events: auto !important;
+  cursor: pointer;
+}
