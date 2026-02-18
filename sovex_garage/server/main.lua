@@ -124,10 +124,24 @@ local function SeedGaragesToDB()
             { garage.name }
         )
         if not existing then
-            local spawnJson  = json.encode(garage.spawn or {})
-            local coordsJson = type(garage.coords) == 'vector3'
-                and json.encode({ x = garage.coords.x, y = garage.coords.y, z = garage.coords.z })
-                or  json.encode(garage.coords)
+            -- Flatten spawn: Config uses {coords=vector3(), heading=float}
+            -- ParseCoords expects flat {x,y,z,w} when reading back from DB.
+            local s = garage.spawn or {}
+            local sc = s.coords  -- vector3 or nil
+            local spawnJson = json.encode({
+                x = sc and sc.x or s.x or 0.0,
+                y = sc and sc.y or s.y or 0.0,
+                z = sc and sc.z or s.z or 0.0,
+                w = s.heading   or s.w  or 0.0,
+            })
+
+            -- Flatten coords: Config uses vector3(), DB expects {x,y,z}
+            local gc = garage.coords
+            local coordsJson = json.encode({
+                x = gc.x or 0.0,
+                y = gc.y or 0.0,
+                z = gc.z or 0.0,
+            })
 
             MySQL.insert.await(
                 [[INSERT INTO sovex_garages
