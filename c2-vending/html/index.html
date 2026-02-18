@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vending Machine</title>
+    <link rel="stylesheet" href="style.min.css" />
+  </head>
+  <body>
+    <button class="close-btn" onclick="closeUI()">✕ ESC</button>
+
+    <div class="vending-machine">
+      <!-- Left: Display Window -->
+      <div class="display-window">
+        <div class="window-frame">
+          <div class="digital-screen">
+            <div class="screen-text">SELECT YOUR ITEM</div>
+            <div class="selected-display" id="selectedDisplay">
+              <div style="color: #00ff00; font-size: 14px">
+                ◄ CLICK ITEM TO SELECT ►
+              </div>
+            </div>
+          </div>
+
+          <div class="shelves" id="shelves"></div>
+        </div>
+      </div>
+
+      <!-- Right: Control Panel -->
+      <div class="control-panel">
+        <div class="coin-slot-area">
+          <div class="coin-icon">🪙</div>
+          <div class="coin-slot"></div>
+        </div>
+
+        <div class="info-display" id="infoDisplay">
+          <div class="cart-list" id="cartList">
+            <div class="cart-header">CART</div>
+            <div class="cart-items" id="cartItems">
+              <div class="empty-cart">No items selected</div>
+            </div>
+            <div class="cart-divider"></div>
+            <div class="cart-total">
+              <span>TOTAL:</span>
+              <span id="totalPrice" class="total-amount">$0</span>
+            </div>
+          </div>
+        </div>
+        <div class="button-section">
+          <button
+            class="dispense-button"
+            id="dispenseBtn"
+            onclick="dispense()"
+            disabled
+          >
+            Dispense Items
+          </button>
+        </div>
+
+        <div class="dispense-tray">
+          <div class="tray-opening"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.min.js"></script>
+  </body>
+</html>
